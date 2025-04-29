@@ -14,9 +14,9 @@ public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean o
     public static ItemDataHandler formNBT(AbstractItemEntityAccess entity, NbtCompound nbt) {
         NbtList nbtPos = nbt.getList("Pos", 6);
         NbtList nbtVelocity = nbt.getList("Motion", 6);
-        double x = nbtVelocity.getDouble(0) * 20;
-        double y = nbtVelocity.getDouble(1) * 20;
-        double z = nbtVelocity.getDouble(2) * 20;
+        double x = nbtVelocity.getDouble(0);
+        double y = nbtVelocity.getDouble(1);
+        double z = nbtVelocity.getDouble(2);
         Vec3d velocity = new Vec3d(x, y, z);
         double speed = Math.sqrt(x * x + z * z);
         Vec3d pos = new Vec3d(nbtPos.getDouble(0), nbtPos.getDouble(1), nbtPos.getDouble(2));
@@ -106,9 +106,9 @@ public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean o
     }
 
     private static String formatVec3d(Vec3d vec) {
-        return "[" + String.format(getDoubleFormatString(), vec.x) + ", "
-                + String.format(getDoubleFormatString(), vec.y) + ", "
-                + String.format(getDoubleFormatString(), vec.z) + "]";    }
+        return "[" + String.format(getDoubleFormatString(), ItemToolConfig.ItemVelocityMeterPerSecond? vec.x * 20 : vec.x) + ", "
+                + String.format(getDoubleFormatString(), ItemToolConfig.ItemVelocityMeterPerSecond? vec.y * 20 : vec.y) + ", "
+                + String.format(getDoubleFormatString(), ItemToolConfig.ItemVelocityMeterPerSecond? vec.z * 20 : vec.z) + "]";    }
 
     private static String getDoubleFormatString() {
         return "%." + Math.abs(ItemToolConfig.ItemDisplayPrecision) + "f";

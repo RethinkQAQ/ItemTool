@@ -58,7 +58,7 @@ public abstract class ItemEntityRenderMixin extends EntityRenderer<ItemEntity> {
                 Matrix4f matrix4f = matrices.peek().getPositionMatrix();
                 float h = -textRenderer.getWidth(infoText) / 2f;
 
-                textRenderer.draw(infoText, h, yOffset, 0x20FFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.SEE_THROUGH, backgroundColor, 15728640);
+                textRenderer.draw(infoText, h, yOffset, 0x20FFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.SEE_THROUGH, backgroundColor, 15728640);
                 textRenderer.draw(infoText, h, yOffset, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, 15728640);
 
                 matrices.pop();

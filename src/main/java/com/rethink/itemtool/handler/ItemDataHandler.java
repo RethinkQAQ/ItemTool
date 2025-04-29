@@ -26,7 +26,7 @@ public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean o
         int lifeSpan = 6000 - age;
         int pickupDelay = nbt.getInt("PickupDelay");
         int portalCooldown = nbt.getInt("PortalCooldown");
-        int count = nbt.getInt("Count");
+        int count = nbt.getCompound("Item").getInt("count");
 
         return new ItemDataHandler(pos, velocity, speed, onGround, age, lifeSpan, pickupDelay, portalCooldown, count);
     }

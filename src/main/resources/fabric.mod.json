@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "itemtool",
+  "version": "${version}",
+  "name": "ItemTool",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com//ItemTool"
+  },
+  "license": "MIT",
+  "icon": "assets/itemtool/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "com.rethink.itemtool.ItemTool"
+    ],
+    "modmenu": [
+      "com.rethink.itemtool.coustomapi.ModMenuApiImpl"
+    ]
+  },
+  "mixins": [
+    "itemtool.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.0",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "yet_another_config_lib_v3": "*"
+  }
+}

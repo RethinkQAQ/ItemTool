@@ -3,24 +3,23 @@ package com.rethink.itemtool.mixin;
 import com.rethink.itemtool.AbstractItemEntityAccess;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.world.tick.TickManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientWorld.class)
 public class ClientWorldMixin {
 
-    @Redirect(
+    @Inject(
             method = "method_32124",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/tick/TickManager;shouldSkipTick(Lnet/minecraft/entity/Entity;)Z")
     )
-    public boolean shouldSkipTick(TickManager tickManager, Entity entity) {
+    public void shouldSkipTick(Entity entity, CallbackInfo ci) {
         if (entity instanceof AbstractItemEntityAccess) {
             ((AbstractItemEntityAccess) entity).updateDisplayInfo();
         }
-        return tickManager.shouldSkipTick(entity);
     }
 }

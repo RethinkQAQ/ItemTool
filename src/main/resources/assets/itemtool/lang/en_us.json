@@ -44,5 +44,8 @@
   "itemtool.settings.item_pick_delay.desc": "Display item's pick up delay",
   "itemtool.settings.item_portal_cooldown": "Portal Cooldown: ",
   "itemtool.settings.item_portal_cooldown.name": "Portal Cooldown",
-  "itemtool.settings.item_portal_cooldown.desc": "Display item's portal cooldown"
+  "itemtool.settings.item_portal_cooldown.desc": "Display item's portal cooldown",
+  "itemtool.settings.item_is_simulation_tick": "Simulation Tick: ",
+  "itemtool.settings.item_is_simulation_tick.name": "Simulation Tick",
+  "itemtool.settings.item_is_simulation_tick.desc": "The game won't simulation item per tick sometimes"
 }

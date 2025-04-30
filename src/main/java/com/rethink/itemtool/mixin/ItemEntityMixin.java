@@ -29,7 +29,7 @@ public abstract class ItemEntityMixin extends Entity implements AbstractItemEnti
         && MinecraftClient.getInstance().player.getPos().squaredDistanceTo(this.getPos()) < ItemToolConfig.ItemToolRenderRange * 10) {
             MinecraftClient.getInstance().player.networkHandler.getDataQueryHandler().queryEntityNbt(this.getId(), nbt -> {
                 try {
-                    this.itemDisplayData = ItemDataHandler.formNBT(this, nbt);
+                    this.itemDisplayData = ItemDataHandler.formNBT((ItemEntity) (Object)this, nbt);
                 } catch (Exception e) {
                     this.itemDisplayData = null;
                     e.printStackTrace();

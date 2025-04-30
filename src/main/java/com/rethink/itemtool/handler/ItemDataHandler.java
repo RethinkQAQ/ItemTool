@@ -1,7 +1,7 @@
 package com.rethink.itemtool.handler;
 
 import com.rethink.itemtool.config.ItemToolConfig;
-import com.rethink.itemtool.AbstractItemEntityAccess;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
@@ -10,13 +10,13 @@ import net.minecraft.util.math.Vec3d;
 import java.util.ArrayList;
 
 public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean onGround, int age, int lifeSpan,
-                              int pickUpDelay, int portalCooldown, int count) {
-    public static ItemDataHandler formNBT(AbstractItemEntityAccess entity, NbtCompound nbt) {
+                              int pickUpDelay, int portalCooldown, int count, boolean isSimulationTick) {
+    public static ItemDataHandler formNBT(ItemEntity entity, NbtCompound nbt) {
         NbtList nbtPos = nbt.getList("Pos", 6);
         NbtList nbtVelocity = nbt.getList("Motion", 6);
-        double x = nbtVelocity.getDouble(0);
-        double y = nbtVelocity.getDouble(1);
-        double z = nbtVelocity.getDouble(2);
+        double x = ItemToolConfig.ItemVelocityMeterPerSecond ? nbtVelocity.getDouble(0) * 20 : nbtVelocity.getDouble(0);
+        double y = ItemToolConfig.ItemVelocityMeterPerSecond ? nbtVelocity.getDouble(1) * 20 : nbtVelocity.getDouble(1);
+        double z = ItemToolConfig.ItemVelocityMeterPerSecond ? nbtVelocity.getDouble(2) * 20 : nbtVelocity.getDouble(2);
         Vec3d velocity = new Vec3d(x, y, z);
         double speed = Math.sqrt(x * x + z * z);
         Vec3d pos = new Vec3d(nbtPos.getDouble(0), nbtPos.getDouble(1), nbtPos.getDouble(2));
@@ -28,7 +28,13 @@ public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean o
         int portalCooldown = nbt.getInt("PortalCooldown");
         int count = nbt.getCompound("Item").getInt("count");
 
-        return new ItemDataHandler(pos, velocity, speed, onGround, age, lifeSpan, pickupDelay, portalCooldown, count);
+        boolean isSimulationTick = getIsSimulationTick(entity.getId(), age, speed, onGround);
+
+        return new ItemDataHandler(pos, velocity, speed, onGround, age, lifeSpan, pickupDelay, portalCooldown, count, isSimulationTick);
+    }
+
+    public static boolean getIsSimulationTick(int id, int age, double speed, boolean onGround) {
+        return !onGround || speed > 1.0E-5F || (id + age) % 4 == 0;
     }
 
     public ArrayList<Text> getInfoTexts() {
@@ -36,7 +42,7 @@ public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean o
         if (ItemToolConfig.ItemVelocity && this.velocity() != null) {
             infoTexts.add(this.getVelocityText());
         }
-        if (ItemToolConfig.ItemSpeed){
+        if (ItemToolConfig.ItemSpeed) {
             infoTexts.add(this.getSpeedText());
         }
         if (ItemToolConfig.ItemPosition) {
@@ -60,7 +66,14 @@ public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean o
         if (ItemToolConfig.ItemPortalCooldown) {
             infoTexts.add(this.getPortalCooldownText());
         }
+        if (ItemToolConfig.ItemIsSimulationTick) {
+            infoTexts.add(this.getIsSimulationTickText());
+        }
         return infoTexts;
+    }
+
+    private Text getIsSimulationTickText() {
+        return Text.translatable("itemtool.settings.item_is_simulation_tick").append(Text.of(String.valueOf(this.isSimulationTick)));
     }
 
     private Text getPosText() {
@@ -106,9 +119,10 @@ public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean o
     }
 
     private static String formatVec3d(Vec3d vec) {
-        return "[" + String.format(getDoubleFormatString(), ItemToolConfig.ItemVelocityMeterPerSecond? vec.x * 20 : vec.x) + ", "
-                + String.format(getDoubleFormatString(), ItemToolConfig.ItemVelocityMeterPerSecond? vec.y * 20 : vec.y) + ", "
-                + String.format(getDoubleFormatString(), ItemToolConfig.ItemVelocityMeterPerSecond? vec.z * 20 : vec.z) + "]";    }
+        return "[" + String.format(getDoubleFormatString(), vec.x) + ", "
+                + String.format(getDoubleFormatString(), vec.y) + ", "
+                + String.format(getDoubleFormatString(), vec.z) + "]";
+    }
 
     private static String getDoubleFormatString() {
         return "%." + Math.abs(ItemToolConfig.ItemDisplayPrecision) + "f";

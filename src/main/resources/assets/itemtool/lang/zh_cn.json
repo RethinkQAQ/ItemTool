@@ -44,5 +44,8 @@
   "itemtool.settings.item_pick_delay.desc": "显示掉落物的拾取冷却, 仅对于你而言",
   "itemtool.settings.item_portal_cooldown": "传送门冷却: ",
   "itemtool.settings.item_portal_cooldown.name": "传送门冷却",
-  "itemtool.settings.item_portal_cooldown.desc": "显示传送门冷却"
+  "itemtool.settings.item_portal_cooldown.desc": "显示传送门冷却",
+  "itemtool.settings.item_is_simulation_tick": "运算tick: ",
+  "itemtool.settings.item_is_simulation_tick.name": "是否此tick运算",
+  "itemtool.settings.item_is_simulation_tick.desc": "游戏在某些情况并不会每一刻都计算掉落物实体"
 }

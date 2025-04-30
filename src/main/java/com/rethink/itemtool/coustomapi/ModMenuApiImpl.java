@@ -107,6 +107,12 @@ public class ModMenuApiImpl implements ModMenuApi {
                                         .binding(false, () -> ItemToolConfig.ItemPortalCooldown, newVal ->  ItemToolConfig.ItemPortalCooldown = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.translatable("itemtool.settings.item_is_simulation_tick.name"))
+                                        .description(OptionDescription.of(Text.translatable("itemtool.settings.item_is_simulation_tick.desc")))
+                                        .binding(false, () -> ItemToolConfig.ItemIsSimulationTick, newVal ->  ItemToolConfig.ItemIsSimulationTick = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
                                 .build()
                         ).build()
                 ).save(() -> {

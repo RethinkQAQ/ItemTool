@@ -29,6 +29,9 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ItemEntityRenderer;
+//#if MC > 12102
+//$$ import net.minecraft.client.render.entity.state.ItemEntityRenderState;
+//#endif
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.text.Text;
@@ -41,19 +44,37 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 
 @Mixin(ItemEntityRenderer.class)
-public abstract class ItemEntityRenderMixin extends EntityRenderer<ItemEntity> {
+public abstract class ItemEntityRenderMixin
+        extends EntityRenderer<
+        ItemEntity
+        //#if MC >= 12102
+        //$$ ,ItemEntityRenderState
+        //#endif
+        > {
     protected ItemEntityRenderMixin(EntityRendererFactory.Context ctx) {
         super(ctx);
     }
 
     @Inject(
+            //#if MC >= 12102
+            //$$ method = "render(Lnet/minecraft/client/render/entity/state/ItemEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
+            //#else
             method = "render(Lnet/minecraft/entity/ItemEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
+            //#endif
             at = @At("HEAD")
     )
-    private void onRender(ItemEntity itemEntity, float f, float g, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+    private void onRender(
+            //#if MC >= 12102
+            //$$ ItemEntityRenderState itemEntityRenderState,
+            //#else
+            ItemEntity itemEntity, float f, float g,
+            //#endif
+            MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+        //#if MC >= 12102
+        //$$ if (this.dispatcher.targetedEntity instanceof ItemEntity itemEntity) {
+        //#endif
         double distance = this.dispatcher.getSquaredDistanceToCamera(itemEntity);
         if (distance < ItemToolConfig.ItemToolRenderRange * 10 && itemEntity instanceof AbstractItemEntityAccess item) {
-
             ItemDataHandler displayInfo = item.getItemDataInfo();
             if (displayInfo == null) {
                 return;
@@ -74,17 +95,24 @@ public abstract class ItemEntityRenderMixin extends EntityRenderer<ItemEntity> {
                 matrices.push();
                 matrices.translate(0.0, 0.7f, 0.0);
                 matrices.multiply(this.dispatcher.getRotation());
+                //#if MC < 12100
+                //$$ matrices.scale(-0.025f, -0.0255f, 0.025f);
+                //#else
                 matrices.scale(0.025f, -0.0255f, 0.025f);
+                //#endif
                 Matrix4f matrix4f = matrices.peek().getPositionMatrix();
                 float h = -textRenderer.getWidth(infoText) / 2f;
 
-                textRenderer.draw(infoText, h, yOffset, 0x20FFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.SEE_THROUGH, backgroundColor, 15728640);
-                textRenderer.draw(infoText, h, yOffset, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, 15728640);
+                textRenderer.draw(infoText, h, yOffset, 0x20FFFFFF, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.SEE_THROUGH, backgroundColor, i);
+                textRenderer.draw(infoText, h, yOffset, -1, false, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, i);
 
                 matrices.pop();
 
                 yOffset += 10;
             }
+            //#if MC >= 12102
+            //$$ }
+            //#endif
         }
     }
 }

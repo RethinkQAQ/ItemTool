@@ -44,12 +44,13 @@ public abstract class ItemEntityMixin extends Entity implements AbstractItemEnti
         if (!this.getWorld().isClient()) {
             return;
         }
-        if (ItemToolConfig.ItemToolEnabled && MinecraftClient.getInstance().player != null
-        && MinecraftClient.getInstance().player.hasPermissionLevel(2)
-        && MinecraftClient.getInstance().player.getPos().squaredDistanceTo(this.getPos()) < ItemToolConfig.ItemToolRenderRange * 10) {
+        if (ItemToolConfig.ItemToolEnabled
+                && MinecraftClient.getInstance().player != null
+                && MinecraftClient.getInstance().player.hasPermissionLevel(2)
+                && MinecraftClient.getInstance().player.getPos().squaredDistanceTo(this.getPos()) < ItemToolConfig.ItemToolRenderRange * 10) {
             MinecraftClient.getInstance().player.networkHandler.getDataQueryHandler().queryEntityNbt(this.getId(), nbt -> {
                 try {
-                    this.itemDisplayData = ItemDataHandler.formNBT((ItemEntity) (Object)this, nbt);
+                    this.itemDisplayData = ItemDataHandler.formNBT((ItemEntity) (Object) this, nbt);
                 } catch (Exception e) {
                     this.itemDisplayData = null;
                     e.printStackTrace();

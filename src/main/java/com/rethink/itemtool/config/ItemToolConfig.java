@@ -47,9 +47,6 @@ public class ItemToolConfig {
     public static float ItemToolRenderRange = 10.0f;
 
     @SerialEntry
-    public static boolean ItemToolStopWhenTickWarp = true;
-
-    @SerialEntry
     public static boolean ItemVelocityMeterPerSecond = false;
 
     @SerialEntry

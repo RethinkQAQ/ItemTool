@@ -32,21 +32,63 @@ import java.util.ArrayList;
 public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean onGround, int age, int lifeSpan,
                               int pickUpDelay, int portalCooldown, int count, boolean isSimulationTick) {
     public static ItemDataHandler formNBT(ItemEntity entity, NbtCompound nbt) {
+        //#if MC < 12105
         NbtList nbtPos = nbt.getList("Pos", 6);
         NbtList nbtVelocity = nbt.getList("Motion", 6);
-        double x = ItemToolConfig.ItemVelocityMeterPerSecond ? nbtVelocity.getDouble(0) * 20 : nbtVelocity.getDouble(0);
-        double y = ItemToolConfig.ItemVelocityMeterPerSecond ? nbtVelocity.getDouble(1) * 20 : nbtVelocity.getDouble(1);
-        double z = ItemToolConfig.ItemVelocityMeterPerSecond ? nbtVelocity.getDouble(2) * 20 : nbtVelocity.getDouble(2);
-        Vec3d velocity = new Vec3d(x, y, z);
-        double speed = Math.sqrt(x * x + z * z);
-        Vec3d pos = new Vec3d(nbtPos.getDouble(0), nbtPos.getDouble(1), nbtPos.getDouble(2));
+        Vec3d velocity = new Vec3d(
+                nbtVelocity.getDouble(0),
+                nbtVelocity.getDouble(1),
+                nbtVelocity.getDouble(2)
+        );
+        //#else
+        //$$ Vec3d velocity = nbt.get("Motion",Vec3d.CODEC).orElse(Vec3d.ZERO);
+        //$$ Vec3d pos = nbt.get("Pos",Vec3d.CODEC).orElse(Vec3d.ZERO);
+        //#endif
 
-        boolean onGround = nbt.getBoolean("OnGround");
-        int age = nbt.getInt("Age");
+        velocity = ItemToolConfig.ItemVelocityMeterPerSecond ? velocity.multiply(20) : velocity;
+
+        double speed = velocity.horizontalLengthSquared();
+        //#if MC < 12105
+        Vec3d pos = new Vec3d(nbtPos.getDouble(0), nbtPos.getDouble(1), nbtPos.getDouble(2));
+        //#endif
+
+        boolean onGround = nbt.getBoolean(
+                "OnGround"
+                //#if MC >=12105
+                //$$ , false
+                //#endif
+        );
+        int age = nbt.getInt(
+                "Age"
+                //#if MC >= 12105
+                //$$ ,0
+                //#endif
+        );
         int lifeSpan = 6000 - age;
-        int pickupDelay = nbt.getInt("PickupDelay");
-        int portalCooldown = nbt.getInt("PortalCooldown");
-        int count = nbt.getCompound("Item").getInt("count");
+        int pickupDelay = nbt.getInt(
+                "PickupDelay"
+                //#if MC >=12105
+                //$$ , 0
+                //#endif
+        );
+        int portalCooldown = nbt.getInt(
+                "PortalCooldown"
+                //#if MC >=12105
+                //$$ , 0
+                //#endif
+        );
+        int count = nbt
+                //#if MC >= 12105
+                //$$ .getCompoundOrEmpty("Item")
+                //#else
+                .getCompound("Item")
+                //#endif
+                .getInt(
+                        "count"
+                        //#if MC >= 12105
+                        //$$ , 0
+                        //#endif
+                );
 
         boolean isSimulationTick = getIsSimulationTick(entity.getId(), age, speed, onGround);
 

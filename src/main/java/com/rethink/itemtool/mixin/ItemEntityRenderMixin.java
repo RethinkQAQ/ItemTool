@@ -31,6 +31,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ItemEntityRenderer;
 //#if MC > 12102
 //$$ import net.minecraft.client.render.entity.state.ItemEntityRenderState;
+//$$ import org.spongepowered.asm.mixin.Unique;
 //#endif
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
@@ -51,6 +52,12 @@ public abstract class ItemEntityRenderMixin
         //$$ ,ItemEntityRenderState
         //#endif
         > {
+
+    //#if MC > 12102
+    //$$ @Unique
+    //$$ private ItemEntity entity;
+    //#endif
+
     protected ItemEntityRenderMixin(EntityRendererFactory.Context ctx) {
         super(ctx);
     }
@@ -71,7 +78,7 @@ public abstract class ItemEntityRenderMixin
             //#endif
             MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         //#if MC >= 12102
-        //$$ if (this.dispatcher.targetedEntity instanceof ItemEntity itemEntity) {
+        //$$ if (this.entity instanceof ItemEntity itemEntity) {
         //#endif
         double distance = this.dispatcher.getSquaredDistanceToCamera(itemEntity);
         if (distance < ItemToolConfig.ItemToolRenderRange * 10 && itemEntity instanceof AbstractItemEntityAccess item) {
@@ -115,4 +122,14 @@ public abstract class ItemEntityRenderMixin
             //#endif
         }
     }
+
+    //#if MC > 12102
+    //$$    @Inject(
+    //$$            method = "updateRenderState(Lnet/minecraft/entity/ItemEntity;Lnet/minecraft/client/render/entity/state/ItemEntityRenderState;F)V",
+    //$$            at = @At("HEAD")
+    //$$    )
+    //$$    private void getItemData(ItemEntity itemEntity, ItemEntityRenderState itemEntityRenderState, float f, CallbackInfo ci) {
+    //$$        this.entity = itemEntity;
+    //$$    }
+    //#endif
 }

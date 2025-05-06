@@ -1,3 +1,9 @@
+# Item Tool
+中文 | [English](./README.MD)
+
+[![GitHub License](https://img.shields.io/github/license/RethinkQAQ/ItemTool)](http://www.gnu.org/licenses/lgpl-3.0.html)
+
+
 ## 简介
 
 首先非常感谢 Fallen 超级棒的 [mod 模板](https://github.com/Fallen-Breath/fabric-mod-template)  

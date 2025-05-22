@@ -2,6 +2,7 @@
 中文 | [English](./README.MD)
 
 [![GitHub License](https://img.shields.io/github/license/RethinkQAQ/ItemTool)](http://www.gnu.org/licenses/lgpl-3.0.html)
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/6bLR2Z5d?label=Modrith%20Download&color=green)](https://modrinth.com/mod/item-tool)
 
 
 ## 简介

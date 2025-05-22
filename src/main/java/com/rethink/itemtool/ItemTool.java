@@ -21,12 +21,21 @@
 package com.rethink.itemtool;
 
 import com.rethink.itemtool.config.ItemToolConfig;
+import com.rethink.itemtool.config.SettingScreen;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.glfw.GLFW;
 
 public class ItemTool implements ModInitializer {
+
+    public static KeyBinding keyBinding;
 
     public static final Logger LOGGER = LogManager.getLogger("itemtool");
 
@@ -36,6 +45,21 @@ public class ItemTool implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        keyBinding = KeyBindingHelper.registerKeyBinding(
+                new KeyBinding(
+                        "itemtool.key.category",
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_F9,
+                        "itemtool.key.menu"
+                )
+        );
+        ClientTickEvents.END_CLIENT_TICK.register( client -> {
+            if (keyBinding.isPressed()) {
+                MinecraftClient.getInstance().setScreen(
+                        SettingScreen.Menu(MinecraftClient.getInstance().currentScreen)
+                );
+            }
+        });
         updateConfig();
         LOGGER.info(MOD_NAME + " has been initialized!");
     }

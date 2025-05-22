@@ -1,5 +1,7 @@
 {
   "itemtool.unknown": "未知数据",
+  "itemtool.key.menu": "Item Tool",
+  "itemtool.key.category": "打开设置",
   "itemtool.settings.category": "主设置",
   "itemtool.settings.render": "渲染器",
   "itemtool.settings.render.desc": "这是渲染器, 你可以控制渲染的开关",

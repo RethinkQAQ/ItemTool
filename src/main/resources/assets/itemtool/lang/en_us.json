@@ -1,5 +1,7 @@
 {
   "itemtool.unknown": "Unknown",
+  "itemtool.key.menu": "Item Tool",
+  "itemtool.key.category": "Open Menu",
   "itemtool.settings.category": "Main Settings",
   "itemtool.settings.render": "Render",
   "itemtool.settings.render.desc": "this is render settings, turn on/off which you want",

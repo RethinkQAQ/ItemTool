@@ -47,6 +47,9 @@ public class ItemToolConfig {
     public static float ItemToolRenderRange = 10.0f;
 
     @SerialEntry
+    public static boolean ItemName = false;
+
+    @SerialEntry
     public static boolean ItemVelocityMeterPerSecond = false;
 
     @SerialEntry

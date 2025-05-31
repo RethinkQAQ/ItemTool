@@ -29,9 +29,12 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 
-public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean onGround, int age, int lifeSpan,
+public record ItemDataHandler(Text name, Vec3d pos, Vec3d velocity, double speed, boolean onGround, int age, int lifeSpan,
                               int pickUpDelay, int portalCooldown, int count, boolean isSimulationTick) {
     public static ItemDataHandler formNBT(ItemEntity entity, NbtCompound nbt) {
+
+        Text name = entity.getName();
+
         //#if MC < 12105
         NbtList nbtPos = nbt.getList("Pos", 6);
         NbtList nbtVelocity = nbt.getList("Motion", 6);
@@ -92,7 +95,7 @@ public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean o
 
         boolean isSimulationTick = getIsSimulationTick(entity.getId(), age, speed, onGround);
 
-        return new ItemDataHandler(pos, velocity, speed, onGround, age, lifeSpan, pickupDelay, portalCooldown, count, isSimulationTick);
+        return new ItemDataHandler(name, pos, velocity, speed, onGround, age, lifeSpan, pickupDelay, portalCooldown, count, isSimulationTick);
     }
 
     public static boolean getIsSimulationTick(int id, int age, double speed, boolean onGround) {
@@ -101,6 +104,9 @@ public record ItemDataHandler(Vec3d pos, Vec3d velocity, double speed, boolean o
 
     public ArrayList<Text> getInfoTexts() {
         ArrayList<Text> infoTexts = new ArrayList<>();
+        if (ItemToolConfig.ItemName) {
+            infoTexts.add(this.name());
+        }
         if (ItemToolConfig.ItemVelocity && this.velocity() != null) {
             infoTexts.add(this.getVelocityText());
         }

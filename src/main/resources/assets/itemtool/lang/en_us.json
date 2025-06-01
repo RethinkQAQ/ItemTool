@@ -52,5 +52,7 @@
   "itemtool.settings.item_portal_cooldown.desc": "Display item's portal cooldown",
   "itemtool.settings.item_is_simulation_tick": "Simulation Tick: ",
   "itemtool.settings.item_is_simulation_tick.name": "Simulation Tick",
-  "itemtool.settings.item_is_simulation_tick.desc": "The game won't simulation item per tick sometimes"
+  "itemtool.settings.item_is_simulation_tick.desc": "The game won't simulation item per tick sometimes",
+  "itemtool.settings.item_try_merge.name": "Try Merge Bounding Box",
+  "itemtool.settings.item_try_merge.desc": "display trying merge bounding box of item"
 }

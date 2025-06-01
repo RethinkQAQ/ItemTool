@@ -136,6 +136,12 @@ public class SettingScreen {
                                         .binding(false, () -> ItemToolConfig.ItemIsSimulationTick, newVal ->  ItemToolConfig.ItemIsSimulationTick = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.translatable("itemtool.settings.item_try_merge.name"))
+                                        .description(OptionDescription.of(Text.translatable("itemtool.settings.item_try_merge.desc")))
+                                        .binding(false, () -> ItemToolConfig.ItemTryMergeBoundingBox, newVal ->  ItemToolConfig.ItemTryMergeBoundingBox = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
                                 .build()
                         ).build()
                 ).save(() -> {

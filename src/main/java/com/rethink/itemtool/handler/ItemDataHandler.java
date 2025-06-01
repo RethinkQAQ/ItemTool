@@ -25,12 +25,13 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 
 public record ItemDataHandler(Text name, Vec3d pos, Vec3d velocity, double speed, boolean onGround, int age, int lifeSpan,
-                              int pickUpDelay, int portalCooldown, int count, boolean isSimulationTick) {
+                              int pickUpDelay, int portalCooldown, int count, boolean isSimulationTick, Box tryMergeBox) {
     public static ItemDataHandler formNBT(ItemEntity entity, NbtCompound nbt) {
 
         Text name = entity.getName();
@@ -95,7 +96,7 @@ public record ItemDataHandler(Text name, Vec3d pos, Vec3d velocity, double speed
 
         boolean isSimulationTick = getIsSimulationTick(entity.getId(), age, speed, onGround);
 
-        return new ItemDataHandler(name, pos, velocity, speed, onGround, age, lifeSpan, pickupDelay, portalCooldown, count, isSimulationTick);
+        return new ItemDataHandler(name, pos, velocity, speed, onGround, age, lifeSpan, pickupDelay, portalCooldown, count, isSimulationTick, entity.getBoundingBox());
     }
 
     public static boolean getIsSimulationTick(int id, int age, double speed, boolean onGround) {

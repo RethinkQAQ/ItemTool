@@ -9,7 +9,8 @@
     "ClientWorldMixin",
     "DataQueryHandlerMixin",
     "ItemEntityMixin",
-    "ItemEntityRenderMixin"
+    "ItemEntityRenderMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

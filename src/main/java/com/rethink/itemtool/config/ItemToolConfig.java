@@ -81,4 +81,7 @@ public class ItemToolConfig {
 
     @SerialEntry
     public static boolean ItemIsSimulationTick = false;
+
+    @SerialEntry
+    public static boolean ItemTryMergeBoundingBox = false;
 }

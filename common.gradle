@@ -33,21 +33,17 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation("dev.isxander:yet-another-config-lib:${project.yacl_version}")
+	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 
-	if (mcVersion < 11904) {
-		modRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
-	}
-	// [FEATURE] MIXIN_AUDITOR
-	modRuntimeOnly 'me.fallenbreath:mixin-auditor:0.1.0'
+//	if (mcVersion < 11904) {
+//		modRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
+//	}
 
 	// dependencies
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}")
 	include(modImplementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}"))
-//	include(annotationProcessor(implementation("io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}")))
-	if (mcVersion >= 11900) {
-		modImplementation("dev.isxander:yet-another-config-lib:${project.yacl_version}")
-		modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
-	}
+	include(annotationProcessor(implementation("io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}")))
 }
 
 String MIXIN_CONFIG_PATH = 'itemtool.mixins.json'
@@ -71,14 +67,6 @@ loom {
 		ideConfigGenerated = true
 		runDir '../../run'
 		vmArgs commonVmArgs
-	}
-	runs {
-		def auditVmArgs = [*commonVmArgs, '-DmixinAuditor.audit=true']
-		serverMixinAudit {
-			server()
-			vmArgs auditVmArgs
-			ideConfigGenerated false
-		}
 	}
 }
 
@@ -221,17 +209,5 @@ publishing {
 	// select the repositories you want to publish to
 	repositories {
 		// mavenLocal()
-
-//		// [FEATURE] FALLENS_MAVEN
-//		maven {
-//			url = fullArtifactVersion.endsWith("SNAPSHOT") ? "https://maven.fallenbreath.me/snapshots" : "https://maven.fallenbreath.me/releases"
-//			credentials(PasswordCredentials) {
-//				username = 'fallen'
-//				password = System.getenv("FALLENS_MAVEN_TOKEN")
-//			}
-//			authentication {
-//				basic(BasicAuthentication)
-//			}
-//		}
 	}
 }

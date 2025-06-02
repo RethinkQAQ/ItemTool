@@ -21,8 +21,10 @@
 package com.rethink.itemtool.mixin;
 
 import com.rethink.itemtool.AbstractItemEntityAccess;
+import com.rethink.itemtool.config.DisplayMode;
 import com.rethink.itemtool.config.ItemToolConfig;
 import com.rethink.itemtool.handler.ItemDataHandler;
+import com.rethink.itemtool.uitl.RayTraceUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -33,11 +35,18 @@ import net.minecraft.client.render.entity.ItemEntityRenderer;
 //$$ import net.minecraft.client.render.entity.state.ItemEntityRenderState;
 //$$ import org.spongepowered.asm.mixin.Unique;
 //#endif
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import org.joml.Matrix4f;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -80,8 +89,12 @@ public abstract class ItemEntityRenderMixin
         //#if MC >= 12102
         //$$ if (this.entity instanceof ItemEntity itemEntity) {
         //#endif
-        double distance = this.dispatcher.getSquaredDistanceToCamera(itemEntity);
-        if (distance < ItemToolConfig.ItemToolRenderRange * 10 && itemEntity instanceof AbstractItemEntityAccess item) {
+        if (ItemToolConfig.ItemToolDisplayMode == DisplayMode.LOOK_AT) {
+            if (itemEntity != RayTraceUtils.getRayTraceFromEntity()) {
+                return;
+            }
+        }
+        if (this.dispatcher.getSquaredDistanceToCamera(itemEntity) < ItemToolConfig.ItemToolRenderRange * 10 && itemEntity instanceof AbstractItemEntityAccess item) {
             ItemDataHandler displayInfo = item.getItemDataInfo();
             if (displayInfo == null) {
                 return;

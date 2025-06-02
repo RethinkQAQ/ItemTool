@@ -21,8 +21,10 @@
 package com.rethink.itemtool.mixin;
 
 import com.rethink.itemtool.AbstractItemEntityAccess;
+import com.rethink.itemtool.config.DisplayMode;
 import com.rethink.itemtool.config.ItemToolConfig;
 import com.rethink.itemtool.handler.ItemDataHandler;
+import com.rethink.itemtool.uitl.RayTraceUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -48,6 +50,9 @@ public abstract class ItemEntityMixin extends Entity implements AbstractItemEnti
                 && MinecraftClient.getInstance().player != null
                 && MinecraftClient.getInstance().player.hasPermissionLevel(2)
                 && MinecraftClient.getInstance().player.getPos().squaredDistanceTo(this.getPos()) < ItemToolConfig.ItemToolRenderRange * 10) {
+            if (ItemToolConfig.ItemToolDisplayMode == DisplayMode.LOOK_AT && this != RayTraceUtils.getRayTraceFromEntity()) {
+                return;
+            }
             MinecraftClient.getInstance().player.networkHandler.getDataQueryHandler().queryEntityNbt(this.getId(), nbt -> {
                 try {
                     this.itemDisplayData = ItemDataHandler.formNBT((ItemEntity) (Object) this, nbt);

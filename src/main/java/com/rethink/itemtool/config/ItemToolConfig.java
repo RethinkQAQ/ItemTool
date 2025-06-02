@@ -41,6 +41,9 @@ public class ItemToolConfig {
     public static boolean ItemToolDebug = false;
 
     @SerialEntry
+    public static DisplayMode ItemToolDisplayMode = DisplayMode.RANGE;
+
+    @SerialEntry
     public static int ItemDisplayPrecision = 4;
 
     @SerialEntry

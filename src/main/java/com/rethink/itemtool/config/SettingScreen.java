@@ -22,6 +22,7 @@ package com.rethink.itemtool.config;
 
 import com.rethink.itemtool.ItemTool;
 import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
@@ -52,6 +53,14 @@ public class SettingScreen {
                                         .binding(false, () -> ItemToolConfig.ItemToolDebug, newVal ->  ItemToolConfig.ItemToolDebug = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
+                                .option(Option.<DisplayMode>createBuilder()
+                                        .name(Text.translatable("itemtool.settings.display_mode.name"))
+                                        .description(OptionDescription.of(Text.translatable("itemtool.settings.display_mode.desc")))
+                                        .binding(DisplayMode.RANGE, () -> ItemToolConfig.ItemToolDisplayMode, newVal ->  ItemToolConfig.ItemToolDisplayMode = newVal)
+                                        .controller(opt -> EnumControllerBuilder.create(opt)
+                                                .enumClass(DisplayMode.class)
+                                                .formatValue(DisplayMode::getDisplayName)
+                                        ).build())
                                 .option(Option.<Integer>createBuilder()
                                         .name(Text.translatable("itemtool.settings.precision.name"))
                                         .description(OptionDescription.of(Text.translatable("itemtool.settings.precision.desc")))

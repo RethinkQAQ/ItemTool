@@ -178,8 +178,8 @@ jobs:
 #          curseforge-id: 314159
 #          curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
-          github-tag: ${{ steps.release_info.outputs.tag_name }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          github-tag: ${{ steps.release_info.outputs.tag_name }}
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
 
           files: ${{ steps.file_info.outputs.path }}
 

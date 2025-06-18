@@ -107,7 +107,7 @@ public abstract class ItemEntityRenderMixin
 
             TextRenderer textRenderer = this.getTextRenderer();
 
-            float yOffset = 10 - (infoTexts.size() * 10);
+            float yOffset = 10 - (infoTexts.size() * (10 + ItemToolConfig.fontSize / 10.0f));
 
             float backgroundOpacity = MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25f);
             int backgroundColor = (int)(backgroundOpacity * 255.0f) << 24;
@@ -118,7 +118,7 @@ public abstract class ItemEntityRenderMixin
                 //#if MC < 12100
                 //$$ matrices.scale(-0.025f, -0.0255f, 0.025f);
                 //#else
-                matrices.scale(0.025f, -0.0255f, 0.025f);
+                matrices.scale(0.025f * (ItemToolConfig.fontSize / 10.0f), -0.0255f * (ItemToolConfig.fontSize / 10.0f), 0.025f * (ItemToolConfig.fontSize / 10.0f));
                 //#endif
                 Matrix4f matrix4f = matrices.peek().getPositionMatrix();
                 float h = -textRenderer.getWidth(infoText) / 2f;

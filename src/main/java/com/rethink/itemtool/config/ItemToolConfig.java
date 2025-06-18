@@ -47,6 +47,9 @@ public class ItemToolConfig {
     public static int ItemDisplayPrecision = 4;
 
     @SerialEntry
+    public static int fontSize = 10;
+
+    @SerialEntry
     public static float ItemToolRenderRange = 10.0f;
 
     @SerialEntry
